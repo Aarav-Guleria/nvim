@@ -1,8 +1,8 @@
 return {
   "saghen/blink.cmp",
   lazy = false, -- lazy loading handled internally
-  -- optional: provides snippets for the snippet source
-  dependencies = "rafamadriz/friendly-snippets",
+
+  dependencies = "rafamadriz/friendly-snippets", --code snippits
 
   -- use a release tag to download pre-built binaries
   version = "v0.*",
@@ -33,13 +33,13 @@ return {
     completion = {
       accept = {
         -- experimental auto-brackets support
-        auto_brackets = {
+        auto_brackets = { --in mini
           enabled = false,
         },
       },
       menu = {
-        -- Don't automatically show completions
-        auto_show = false,
+
+        auto_show = true,
         draw = {
           columns = {
             { "kind_icon" },
@@ -54,29 +54,30 @@ return {
                   Text = "󰉿",
                   Method = "󰆧",
                   Function = "󰊕",
-                  Constructor = "",
+                  Constructor = "",
                   Field = "󰜢",
                   Variable = "󰀫",
                   Class = "󰠱",
-                  Interface = "",
-                  Module = "",
+                  Interface = "",
+                  Module = "",
                   Property = "󰜢",
                   Unit = "󰑭",
                   Value = "󰎠",
-                  Enum = "",
+                  Enum = "",
                   Keyword = "󰌋",
-                  Snippet = "",
+                  Snippet = "",
                   Color = "󰏘",
                   File = "󰈙",
                   Reference = "󰈇",
                   Folder = "󰉋",
-                  EnumMember = "",
+                  EnumMember = "",
                   Constant = "󰏿",
-                  Struct = "",
-                  Event = "",
+                  Struct = "",
+                  Event = "",
                   Operator = "󰆕",
                   TypeParameter = "󰊄",
                 }
+
                 return (kind_icons[ctx.kind] or ctx.kind) .. " "
               end,
               highlight = "BlinkCmpKind",
@@ -106,7 +107,7 @@ return {
           scrollbar = true,
         },
       },
-      ghost_text = {
+      ghost_text = { --using copilot for ghost suggestions
         enabled = false,
       },
     },
