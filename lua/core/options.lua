@@ -35,7 +35,7 @@ opt.hlsearch = false
 opt.termguicolors = true
 opt.cursorline = true
 opt.signcolumn = "yes"
---opt.colorcolumn = "80"
+opt.colorcolumn = "80"
 opt.guicursor = ""
 opt.background = "dark"
 
@@ -70,5 +70,5 @@ opt.isfname:append("@-@")
 -- Disable netrw banner
 g.netrw_banner = 0
 
--- EditorConfig support (optional, if you use .editorconfig files)
+-- EditorConfig support (if using .editorconfig files)
 g.editorconfig = true

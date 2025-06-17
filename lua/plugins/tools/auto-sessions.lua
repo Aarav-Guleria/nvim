@@ -9,15 +9,15 @@ return {
       local auto_session = require("auto-session")
 
       auto_session.setup({
-        -- Updated Session options with new names
+
         log_level = "error",
-        auto_restore = false, -- Updated
-        auto_restore_last_session = false, -- Updated (equivalent to auto_session_enable_last_session)
-        root_dir = vim.fn.stdpath("data") .. "/sessions/", -- Updated (no longer 'auto_session_root_dir')
-        enabled = true, -- Updated (no longer 'auto_session_enabled')
-        auto_save = false, -- Updated (no longer 'auto_save_enabled')
-        -- auto_restore_enabled = false, -- This is now covered by auto_restore=false, no need for separate line
-        suppressed_dirs = { -- Updated (no longer 'auto_session_suppress_dirs')
+        auto_restore = false,
+        auto_restore_last_session = false,
+        root_dir = vim.fn.stdpath("data") .. "/sessions/",
+        enabled = true,
+        auto_save = false,
+
+        suppressed_dirs = {
           "~/",
           "~/Downloads",
           "/tmp",

@@ -34,12 +34,12 @@ return {
       accept = {
         -- experimental auto-brackets support
         auto_brackets = {
-          enabled = true,
+          enabled = false,
         },
       },
       menu = {
         -- Don't automatically show completions
-        auto_show = true,
+        auto_show = false,
         draw = {
           columns = {
             { "kind_icon" },
@@ -107,11 +107,11 @@ return {
         },
       },
       ghost_text = {
-        enabled = true,
+        enabled = false,
       },
     },
 
-    -- experimental auto-brackets support
+    --interraction with luasnip
     snippets = {
       expand = function(snippet)
         require("luasnip").lsp_expand(snippet)
@@ -135,7 +135,7 @@ return {
       -- cmdline = {},
 
       -- adding any nvim-cmp sources here will enable them
-      -- with blink.cmp (assuming you have the dependencies installed)
+      -- with blink.cmp (assuming the dependencies are installed)
       providers = {
         lsp = {
           name = "LSP",
@@ -191,7 +191,6 @@ return {
       },
     },
   },
-  -- allows extending the providers array elsewhere in your config
-  -- without having to redefine it
+  -- allows extending the providers array elsewhere in config without having to redefine it
   opts_extend = { "sources.default" },
 }

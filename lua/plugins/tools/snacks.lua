@@ -34,7 +34,7 @@ return {
       end)
     end,
     keys = {
-      -- Snacks-integrated Telescope pickers
+      --Snacks integrated Telescope pickers
       {
         "<leader>tt",
         function()
@@ -66,7 +66,7 @@ return {
     },
   },
 
-  -- Optional: Todo-comments integration with Snacks pickers
+  -- Todo comments integration with Snacks pickers
   {
     "folke/todo-comments.nvim",
     event = { "BufReadPre", "BufNewFile" },

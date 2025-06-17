@@ -4,7 +4,7 @@ return {
     "nvim-lua/plenary.nvim",
     "nvim-telescope/telescope.nvim",
   },
-  -- Add this 'keys' table to lazy-load the plugin
+
   keys = {
     {
       "<leader>wl",

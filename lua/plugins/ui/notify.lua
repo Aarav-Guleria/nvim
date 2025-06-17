@@ -17,11 +17,11 @@ return {
       minimum_width = 30,
 
       icons = {
-        ERROR = "", -- nf-fa-times_circle
-        WARN = "", -- nf-fa-exclamation_triangle
-        INFO = "", -- nf-fa-info_circle
-        DEBUG = "", -- nf-fa-bug
-        TRACE = "✎", -- any symbol you like for trace
+        ERROR = "",
+        WARN = "",
+        INFO = "",
+        DEBUG = "",
+        TRACE = "✎",
       },
     })
 

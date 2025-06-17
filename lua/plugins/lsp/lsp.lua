@@ -76,10 +76,10 @@ return {
     end
     -- Diagnostic signs
     local signs = {
-      Error = "", -- nf-fa-times_circle
-      Warn = "", -- nf-fa-exclamation_triangle
-      Hint = "󰌵", -- You had this already, a good hint icon
-      Info = "", -- nf-fa-info_circle
+      Error = "",
+      Warn = "",
+      Hint = "󰌵",
+      Info = "",
     }
     for type, icon in pairs(signs) do
       local hl = "DiagnosticSign" .. type

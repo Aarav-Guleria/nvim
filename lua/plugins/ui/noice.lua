@@ -13,7 +13,7 @@ return {
       noice.setup({
         cmdline = {
           enabled = true, --cmdline UI
-          view = "cmdline", -- Use native cmdline at bottom instead of popup
+          view = "cmdline_popup", --cmdline, popup, mini
           format = {
             cmdline = { pattern = "", icon = "󱐌 :", lang = "vim" },
             help = { pattern = "^:%s*he?l?p?%s+", icon = "󰮦 :" },
@@ -33,6 +33,25 @@ return {
           backend = "nui",
         },
         views = {
+          cmdline_popup = {
+            position = {
+              row = "95%", -- bottom
+              col = "50%", -- center horizontally
+            },
+            size = {
+              width = 60,
+              height = "auto",
+            },
+            border = {
+              style = "rounded",
+            },
+            win_options = {
+              winhighlight = {
+                Normal = "Normal",
+                FloatBorder = "FloatBorder",
+              },
+            },
+          },
           popupmenu = {
             relative = "editor",
             position = { row = "90%", col = "50%" },

@@ -25,8 +25,8 @@ return {
     }
     local formatters_by_ft = {
       lua = { "stylua" },
-      yaml = { "prettierd" }, -- kept prettierd only here
-      markdown = { "prettierd" }, -- and here
+      yaml = { "prettierd" },
+      markdown = { "prettierd" },
     }
     for _, ft in ipairs(biome_filetypes) do
       formatters_by_ft[ft] = { "biome" }

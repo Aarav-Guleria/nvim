@@ -87,13 +87,13 @@ return {
         },
       })
       -- Safe folds setup for ufo.nvim
-      --vim.opt.foldmethod = "manual"
-      --vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
       vim.opt.foldenable = true
       vim.opt.foldlevel = 99
       vim.opt.foldlevelstart = 99
       vim.opt.foldnestmax = 3
       vim.opt.foldcolumn = "0"
+      --vim.opt.foldmethod = "manual"
+      --vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
     end,
   },
   {

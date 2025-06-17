@@ -7,25 +7,37 @@ return {
     name = "catppuccin",
     lazy = current ~= "catppuccin",
     priority = current == "catppuccin" and 1000 or nil,
+
     config = function()
       require("catppuccin").setup({
-        flavour = "mocha",
+        flavour = "mocha", -- latte, frappe, macchiato, mocha
         background = { dark = "mocha" },
+
         transparent_background = true,
+        show_end_of_buffer = false,
+        term_colors = true,
+
         integrations = {
-          treesitter = true,
           cmp = true,
           gitsigns = true,
-          telescope = true,
           neotree = true,
           dap = true,
           mason = true,
           notify = false,
-          mini = true,
           flash = true,
           noice = true,
           snacks = true,
           bufferline = true,
+          mini = {
+            enabled = true,
+            indentscope_color = "purple",
+          },
+          telescope = {
+            enabled = true,
+            style = "nvchad",
+          },
+
+          treesitter = true,
           native_lsp = {
             enabled = true,
             virtual_text = {
@@ -46,20 +58,21 @@ return {
     end,
   },
 
-  -- 🌹 Rose Pine
+  --Rose Pine
   {
     "rose-pine/neovim",
     name = "rose-pine",
     lazy = current ~= "rose-pine",
     priority = current == "rose-pine" and 1000 or nil,
+
     config = function()
       require("rose-pine").setup({
-        variant = "main",
+        variant = "main", -- auto, main, moon, dawn
         dark_variant = "main",
         styles = {
           bold = true,
           italic = false,
-          transparency = false,
+          transparency = true,
         },
         highlight_groups = {
           Normal = { bg = "none" },
@@ -67,7 +80,7 @@ return {
           PmenuSel = { bg = "#4a465d", fg = "#f8f5f2" },
         },
         enable = {
-          terminal = false,
+          terminal = true,
           legacy_highlights = false,
           migrations = true,
         },
@@ -75,7 +88,7 @@ return {
     end,
   },
 
-  -- 🤤 Gruvbox
+  --Gruvbox
   {
     "ellisonleao/gruvbox.nvim",
     name = "gruvbox",
@@ -93,7 +106,7 @@ return {
     end,
   },
 
-  -- 🍃 Kanagawa
+  --Kanagawa
   {
     "rebelot/kanagawa.nvim",
     name = "kanagawa",
@@ -105,7 +118,7 @@ return {
         keywordStyle = { italic = false },
         statementStyle = { bold = true },
         transparent = false,
-        theme = "dragon", --wave or dragon
+        theme = "wave", --wave or dragon
         background = { dark = "dragon" },
         overrides = function(colors)
           local theme = colors.theme
@@ -113,13 +126,21 @@ return {
             NormalFloat = { bg = "none" },
             Pmenu = { fg = theme.ui.shade0, bg = "NONE", blend = vim.o.pumblend },
             MasonNormal = { bg = theme.ui.bg_m3, fg = theme.ui.fg_dim },
+
+            TelescopeTitle = { fg = theme.ui.special, bold = true },
+            TelescopePromptNormal = { bg = theme.ui.bg_p1 },
+            TelescopePromptBorder = { fg = theme.ui.bg_p1, bg = theme.ui.bg_p1 },
+            TelescopeResultsNormal = { fg = theme.ui.fg_dim, bg = theme.ui.bg_m1 },
+            TelescopeResultsBorder = { fg = theme.ui.bg_m1, bg = theme.ui.bg_m1 },
+            TelescopePreviewNormal = { bg = theme.ui.bg_dim },
+            TelescopePreviewBorder = { bg = theme.ui.bg_dim, fg = theme.ui.bg_dim },
           }
         end,
       })
     end,
   },
 
-  -- 🌞 Solarized Osaka
+  --Solarized Osaka
   {
     "craftzdog/solarized-osaka.nvim",
     name = "solarized-osaka",
@@ -142,22 +163,27 @@ return {
     end,
   },
 
-  -- 💙 Tokyonigh
+  --Tokyonigh
   {
     "folke/tokyonight.nvim",
-    -- Don't rename it to something else
-    lazy = current ~= "tokyonight", -- match lowercase!
+    lazy = current ~= "tokyonight",
     priority = current == "tokyonight" and 1000 or nil,
+
     config = function()
       require("tokyonight").setup({
         style = "night", --storm, night, moon, day
-        transparent = false,
+        transparent = true,
+        terminal_colors = true,
+
         styles = {
-          comments = { italic = false },
-          keywords = { italic = false },
+          comments = { italic = true },
+          keywords = { italic = true },
           sidebars = "transparent",
           floats = "transparent",
         },
+
+        dim_inactive = true,
+        lualine_bold = true,
       })
     end,
   },

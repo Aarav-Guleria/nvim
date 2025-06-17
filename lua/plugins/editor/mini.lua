@@ -2,6 +2,7 @@ return {
   "echasnovski/mini.nvim",
   version = false,
   event = "VeryLazy",
+
   dependencies = {
     {
       "lukas-reineke/indent-blankline.nvim",
@@ -17,6 +18,7 @@ return {
       },
     },
   },
+
   config = function()
     --Core Editing Enhancements
     require("mini.ai").setup()
@@ -27,13 +29,12 @@ return {
     require("mini.trailspace").setup()
     require("mini.surround").setup()
     require("mini.pairs").setup()
-
-    -- 🧱 Structural/Visual Enhancements
+    --Structural/Visual Enhancements
     require("mini.align").setup()
     require("mini.move").setup()
     require("mini.bracketed").setup()
 
-    -- 🎞️ Animate UI (except for popups like Noice)
+    --Animate UI (except for popups like Noice)
     require("mini.animate").setup({
       open = { enable = false },
       close = { enable = false },
@@ -48,7 +49,7 @@ return {
       },
     })
 
-    -- 🔍 Dynamic indent guides with active scope highlight only
+    --indent guides with active scope highlight only
     require("mini.indentscope").setup({
       symbol = "│",
       options = { try_as_border = true },
@@ -58,15 +59,24 @@ return {
       },
     })
 
-    -- Disable indentscope in popup-type UIs
+    -- Disable indentscope, and mini move in popup plugins
     vim.api.nvim_create_autocmd("FileType", {
       pattern = { "lazy", "mason", "notify", "noice", "TelescopePrompt" },
       callback = function()
         vim.b.miniindentscope_disable = true
+        vim.b.minimove_disable = true
       end,
     })
 
-    -- 🧠 Smart keybinding hints
+    -- Disable mini.splitjoin in certain filetypes to avoid conflict
+    vim.api.nvim_create_autocmd("FileType", {
+      pattern = { "javascript", "javascriptreact", "typescript", "typescriptreact", "json", "html", "css" },
+      callback = function()
+        vim.b.minisplitjoin_disable = true
+      end,
+    })
+
+    --key hints
     require("mini.clue").setup({
       triggers = {
         { mode = "n", keys = "<Leader>" },
@@ -75,11 +85,11 @@ return {
         { mode = "n", keys = "'" },
         { mode = "n", keys = "`" },
         { mode = "x", keys = "g" },
-        { mode = "i", keys = "<C-x>" },
-        { mode = "c", keys = "<C-x>" },
+        --{ mode = "i", keys = "<C-x>" },
+        --{ mode = "c", keys = "<C-x>" },
       },
       clues = {
-        require("mini.clue").gen_clues.builtin_completion(),
+        --require("mini.clue").gen_clues.builtin_completion(),
         require("mini.clue").gen_clues.g(),
         require("mini.clue").gen_clues.marks(),
         require("mini.clue").gen_clues.registers(),

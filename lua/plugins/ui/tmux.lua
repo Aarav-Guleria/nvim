@@ -31,7 +31,6 @@ return {
     lazy = false, -- load immediately for keymaps to work
   },
 
-  --Optional: colorful window separators
   {
     "nvim-zh/colorful-winsep.nvim",
     config = function()
