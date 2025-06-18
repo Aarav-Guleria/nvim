@@ -3,7 +3,7 @@ return {
     "nvim-lua/plenary.nvim",
     lazy = true,
   },
-  -- TypeScript tools (replaces ts_ls) in the webdev-languages plugin
+  -- TypeScript tools (replaces ts_ls)
   {
     "pmizio/typescript-tools.nvim",
     dependencies = {
@@ -22,9 +22,16 @@ return {
           includeInlayParameterNameHints = "all",
           includeCompletionsForModuleExports = true,
           includeInlayFunctionLikeReturnTypeHints = true,
+          includeInlayVariableTypeHints = true,
         },
       },
     },
+    config = function(_, opts)
+      require("typescript-tools").setup(opts)
+
+      -- Inlay hint styling
+      vim.api.nvim_set_hl(0, "LspInlayHint", { fg = "#888888", italic = true })
+    end,
   },
   -- Tailwind and general autotag support
   {

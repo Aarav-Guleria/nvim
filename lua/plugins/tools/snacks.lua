@@ -31,39 +31,11 @@ return {
       end
       vim.schedule(function()
         snacks.setup(opts)
+        if opts.input.enabled then
+          vim.ui.input = snacks.input
+        end
       end)
     end,
-    keys = {
-      --Snacks integrated Telescope pickers
-      {
-        "<leader>tt",
-        function()
-          require("telescope.builtin").builtin()
-        end,
-        desc = "Telescope Builtins",
-      },
-      {
-        "<leader>tf",
-        function()
-          require("telescope.builtin").find_files()
-        end,
-        desc = "Telescope Find Files",
-      },
-      {
-        "<leader>tg",
-        function()
-          require("telescope.builtin").live_grep()
-        end,
-        desc = "Telescope Live Grep",
-      },
-      {
-        "<leader>tb",
-        function()
-          require("telescope.builtin").buffers()
-        end,
-        desc = "Telescope Buffers",
-      },
-    },
   },
 
   -- Todo comments integration with Snacks pickers

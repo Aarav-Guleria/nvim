@@ -1,16 +1,16 @@
 return {
-  --Terminal toggling for tmux sessions inside nvim
-  {
-    "akinsho/toggleterm.nvim",
-    config = function()
-      require("toggleterm").setup({
-        size = 20,
-        open_mapping = [[<c-\>]],
-        direction = "horizontal",
-        shade_terminals = true,
-      })
-    end,
-  },
+  --Terminal toggling for tmux sessions inside nvim, enabled separately
+  -- {
+  --   "akinsho/toggleterm.nvim",
+  --   config = function()
+  --     require("toggleterm").setup({
+  --       size = 20,
+  --       open_mapping = [[<c-\>]],
+  --       direction = "horizontal",
+  --       shade_terminals = true,
+  --     })
+  --   end,
+  -- },
 
   --pane navigation and resizing from nvim
   {

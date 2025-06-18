@@ -27,5 +27,9 @@ return {
     map("n", ",4", function()
       harpoon:list():select(4)
     end, opts)
+
+    -- Telescope integration
+    --require("telescope").load_extension("harpoon")
+    --map("n", "<leader>ht", ":Telescope harpoon marks<CR>", { desc = "Harpoon Telescope" })
   end,
 }

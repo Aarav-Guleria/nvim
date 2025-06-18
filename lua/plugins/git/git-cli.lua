@@ -2,9 +2,10 @@ return {
   "tpope/vim-fugitive",
   cmd = { "Git" },
   config = function()
-    vim.keymap.set("n", "<leader>gg", function()
-      vim.cmd("Git")
-    end, { desc = "Open Git status" })
+    local map = vim.keymap.set
+    map("n", "<leader>gg", ":Git<CR>", { desc = "Open Git status" })
+    map("n", "<leader>gc", ":Git commit<CR>", { desc = "Git commit" })
+    map("n", "<leader>gb", ":Git branch<CR>", { desc = "Git branch" })
 
     local augroup = vim.api.nvim_create_augroup("myFugitive", {})
     vim.api.nvim_create_autocmd("BufWinEnter", {
@@ -16,14 +17,9 @@ return {
         end
         local bufnr = vim.api.nvim_get_current_buf()
         local opts = { buffer = bufnr, remap = false }
-
-        vim.keymap.set("n", "<leader>P", function()
-          vim.cmd("Git push --quiet")
-        end, opts)
-        vim.keymap.set("n", "<leader>p", function()
-          vim.cmd("Git pull --rebase --quiet")
-        end, opts)
-        vim.keymap.set("n", "<leader>t", ":Git push -u origin ", opts)
+        map("n", "<leader>P", ":Git push --quiet<CR>", opts)
+        map("n", "<leader>p", ":Git pull --rebase --quiet<CR>", opts)
+        map("n", "<leader>t", ":Git push -u origin ", opts)
       end,
     })
   end,

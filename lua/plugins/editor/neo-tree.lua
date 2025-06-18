@@ -12,12 +12,15 @@ return {
       popup_border_style = "rounded",
       enable_git_status = true,
       enable_diagnostics = true,
+      follow_current_file = true,
+
       filesystem = {
         filtered_items = {
           visible = true, -- Show all items
           hide_dotfiles = false, -- Show dotfiles
           hide_gitignored = false, -- Show .gitignored
         },
+        use_libuv_file_watcher = true,
       },
     })
   end,

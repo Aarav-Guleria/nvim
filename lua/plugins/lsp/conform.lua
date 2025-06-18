@@ -1,10 +1,11 @@
 return {
   "stevearc/conform.nvim",
+  enabled = true,
   event = { "BufWritePre" },
   cmd = { "ConformInfo" },
   keys = {
     {
-      "<leader>f",
+      "<leader>fm", -- Changed from <leader>f to avoid conflict with future plugins
       function()
         require("conform").format({ async = true, lsp_fallback = true })
       end,
@@ -12,44 +13,36 @@ return {
       desc = "Format buffer",
     },
   },
-  opts = function()
-    local biome_filetypes = {
-      "javascript",
-      "typescript",
-      "javascriptreact",
-      "typescriptreact",
-      "json",
-      "html",
-      "css",
-      "scss",
-    }
-    local formatters_by_ft = {
+  opts = {
+    format_on_save = {
+      timeout_ms = 500,
+      lsp_fallback = true,
+    },
+    formatters_by_ft = {
       lua = { "stylua" },
+      javascript = { "biome" },
+      typescript = { "biome" },
+      javascriptreact = { "biome" },
+      typescriptreact = { "biome" },
+      json = { "biome" },
+      html = { "biome" },
+      css = { "biome" },
+      scss = { "biome" },
       yaml = { "prettierd" },
       markdown = { "prettierd" },
-    }
-    for _, ft in ipairs(biome_filetypes) do
-      formatters_by_ft[ft] = { "biome" }
-    end
-    return {
-      format_on_save = {
-        timeout_ms = 500,
-        lsp_fallback = true,
+    },
+    formatters = {
+      stylua = {
+        prepend_args = { "--indent-type", "Spaces", "--indent-width", "2" },
       },
-      formatters_by_ft = formatters_by_ft,
-      formatters = {
-        stylua = {
-          prepend_args = { "--indent-type", "Spaces", "--indent-width", "2" },
-        },
-        prettierd = {
-          prepend_args = { "--tab-width", "2" },
-        },
-        -- No prettierd for JS/TS here
+      prettierd = {
+        prepend_args = { "--tab-width", "2" },
       },
-    }
-  end,
+      -- Biome can be configured via a biome.json file, no args needed here usually
+    },
+    --stop_after_first = true --to try formatters sequentially
+  },
   init = function()
-    -- Avoid deprecated globals by assigning once at init
     vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
   end,
 }

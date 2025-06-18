@@ -36,6 +36,8 @@ return {
     },
     win = {
       border = "rounded", -- none, single, double, shadow
+      -- REMOVED: position = "bottom", -- This key is no longer valid
+      -- REMOVED: margin = { 1, 0, 1, 0 }, -- This key is no longer valid
       padding = { 2, 2, 2, 2 }, -- top, right, bottom, left
     },
     layout = {
@@ -68,7 +70,6 @@ return {
       { "<leader>c", group = "Code/Completion" },
       { "<leader>ca", desc = "Code Action", mode = { "n", "v" } },
       { "<leader>d", group = "Debug/Delete" },
-      { "<leader>dG", desc = "Document Symbols" }, -- UPDATED
       { "<leader>db", desc = "Toggle Breakpoint" },
       { "<leader>dB", desc = "Conditional Breakpoint" },
       { "<leader>dw", desc = "Toggle DAP UI" },
@@ -84,14 +85,14 @@ return {
       { "<leader>g", group = "Git" },
       { "<leader>gg", desc = "Open Fugitive (Git Status)" },
       { "<leader>gS", desc = "Git Status (Telescope)" },
-      { "<leader>gc", desc = "Git commit" }, -- UPDATED
-      { "<leader>gb", desc = "Git branch" }, -- ADDED
+      { "<leader>gc", desc = "Git Commits (Telescope)" },
       { "<leader>gs", group = "Stage" },
       { "<leader>gs_", desc = "Stage Hunk" },
       { "<leader>gsb", desc = "Stage Buffer" },
       { "<leader>gr", group = "Reset" },
       { "<leader>gr_", desc = "Reset Hunk" },
       { "<leader>gp", desc = "Preview Hunk" },
+      { "<leader>gb", group = "Blame" },
       { "<leader>gbl", desc = "Blame Line" },
       { "<leader>gu", desc = "Undo Stage" },
       { "<leader>h", group = "Harpoon" },
@@ -100,7 +101,7 @@ return {
       { "<leader>l", group = "Lazy/LSP" },
       { "<leader>lg", desc = "LazyGit" },
       { "<leader>lr", group = "REST" },
-      -- { "<leader>lre", desc = "Restart ESLint" }, -- REMOVED
+      { "<leader>lre", desc = "Restart ESLint" },
       { "<leader>q", "<cmd>qa<CR>", desc = "Quit All" },
       { "<leader>r", group = "Rename" },
       { "<leader>rn", desc = "Rename Symbol" },
@@ -118,13 +119,9 @@ return {
       { "<leader>sw", desc = "Search/Replace Word" },
       { "<leader>t", group = "Toggle/Terminal" },
       { "<leader>tt", desc = "Toggle Terminal" },
-      -- { "<leader>u", "<cmd>UndotreeToggle<CR>", desc = "Undo Tree" }, -- REMOVED
+      { "<leader>u", "<cmd>UndotreeToggle<CR>", desc = "Undo Tree" },
       { "<leader>w", "<cmd>w<CR>", desc = "Write File" },
-      { "<leader>x", group = "Trouble / Executable" }, -- ADDED Group
-      { "<leader>xx", "<cmd>TroubleToggle<cr>", desc = "Toggle Trouble" }, -- ADDED
-      { "<leader>xw", "<cmd>Trouble workspace_diagnostics<cr>", desc = "Workspace Diagnostics" }, -- ADDED
-      { "<leader>xd", "<cmd>Trouble document_diagnostics<cr>", desc = "Document Diagnostics" }, -- ADDED
-      { "<leader>xe", desc = "Make Executable" }, -- MOVED from <leader>x
+      { "<leader>x", desc = "Make Executable" },
     })
   end,
 }

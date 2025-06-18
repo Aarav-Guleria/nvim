@@ -1,3 +1,5 @@
+-- In plugins/editor/mini.lua
+
 return {
   "echasnovski/mini.nvim",
   version = false,
@@ -20,8 +22,12 @@ return {
   },
 
   config = function()
+    vim.g.miniindentscope_disable = false
+    vim.g.ministatusline_disable = true
+    vim.g.ministatuscolumn_disable = true
+
     --Core Editing Enhancements
-    require("mini.ai").setup()
+    --require("mini.ai").setup() if conflicting with treesitter textobjects
     require("mini.comment").setup()
     require("mini.diff").setup()
     require("mini.operators").setup()
@@ -31,7 +37,23 @@ return {
     require("mini.pairs").setup()
     --Structural/Visual Enhancements
     require("mini.align").setup()
-    require("mini.move").setup()
+    require("mini.move").setup() -- mini.move setup
+
+    --Keymaps for mini.move
+    local keymap = vim.keymap.set
+    keymap("n", "<A-j>", function()
+      require("mini.move").move_line("down")
+    end, { desc = "Move line down" })
+    keymap("n", "<A-k>", function()
+      require("mini.move").move_line("up")
+    end, { desc = "Move line up" })
+    keymap("v", "<A-j>", function()
+      require("mini.move").move_selection("down")
+    end, { desc = "Move selection down" })
+    keymap("v", "<A-k>", function()
+      require("mini.move").move_selection("up")
+    end, { desc = "Move selection up" })
+
     require("mini.bracketed").setup()
 
     --Animate UI (except for popups like Noice)
@@ -74,33 +96,6 @@ return {
       callback = function()
         vim.b.minisplitjoin_disable = true
       end,
-    })
-
-    --key hints
-    require("mini.clue").setup({
-      triggers = {
-        { mode = "n", keys = "<Leader>" },
-        { mode = "x", keys = "<Leader>" },
-        { mode = "n", keys = "g" },
-        { mode = "n", keys = "'" },
-        { mode = "n", keys = "`" },
-        { mode = "x", keys = "g" },
-        --{ mode = "i", keys = "<C-x>" },
-        --{ mode = "c", keys = "<C-x>" },
-      },
-      clues = {
-        --require("mini.clue").gen_clues.builtin_completion(),
-        require("mini.clue").gen_clues.g(),
-        require("mini.clue").gen_clues.marks(),
-        require("mini.clue").gen_clues.registers(),
-        require("mini.clue").gen_clues.windows(),
-        require("mini.clue").gen_clues.z(),
-      },
-      window = {
-        config = {
-          border = "rounded",
-        },
-      },
     })
   end,
 }

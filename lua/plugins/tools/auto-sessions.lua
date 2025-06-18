@@ -182,35 +182,35 @@ return {
   },
 
   -- persistence.nvim config
-  {
-    "folke/persistence.nvim",
-    event = "BufReadPre",
-    opts = {
-      dir = vim.fn.expand(vim.fn.stdpath("state") .. "/sessions/"),
-      options = { "buffers", "curdir", "tabpages", "winsize" },
-    },
-    keys = {
-      {
-        "<leader>sp",
-        function()
-          require("persistence").load()
-        end,
-        desc = "Restore Session (Persistence)",
-      },
-      {
-        "<leader>sP",
-        function()
-          require("persistence").load({ last = true })
-        end,
-        desc = "Restore Last Session",
-      },
-      {
-        "<leader>sq",
-        function()
-          require("persistence").stop()
-        end,
-        desc = "Don't Save Current Session",
-      },
-    },
-  },
+  --   {
+  --     "folke/persistence.nvim",
+  --     event = "BufReadPre",
+  --     opts = {
+  --       dir = vim.fn.expand(vim.fn.stdpath("state") .. "/sessions/"),
+  --       options = { "buffers", "curdir", "tabpages", "winsize" },
+  --     },
+  --     keys = {
+  --       {
+  --         "<leader>sp",
+  --         function()
+  --           require("persistence").load()
+  --         end,
+  --         desc = "Restore Session (Persistence)",
+  --       },
+  --       {
+  --         "<leader>sP",
+  --         function()
+  --           require("persistence").load({ last = true })
+  --         end,
+  --         desc = "Restore Last Session",
+  --       },
+  --       {
+  --         "<leader>sq",
+  --         function()
+  --           require("persistence").stop()
+  --         end,
+  --         desc = "Don't Save Current Session",
+  --       },
+  --     },
+  --   },
 }

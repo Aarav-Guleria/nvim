@@ -1,8 +1,8 @@
 return {
   "neovim/nvim-lspconfig",
   dependencies = {
-    "williamboman/mason.nvim",
-    "williamboman/mason-lspconfig.nvim",
+    --"williamboman/mason.nvim",
+    --"williamboman/mason-lspconfig.nvim",
   },
   event = { "BufReadPre", "BufNewFile" },
   config = function()
@@ -74,6 +74,15 @@ return {
       end
       lspconfig[server].setup(opts)
     end
+
+    vim.diagnostic.config({
+      virtual_text = { spacing = 4, prefix = "●", severity = vim.diagnostic.severity.WARN },
+      signs = true,
+      underline = true,
+      update_in_insert = false,
+      severity_sort = true,
+    })
+
     -- Diagnostic signs
     local signs = {
       Error = "",

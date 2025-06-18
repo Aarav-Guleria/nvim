@@ -4,6 +4,10 @@ local g = vim.g
 --for faster loading
 vim.loader.enable()
 
+vim.opt.ttyfast = true
+vim.opt.lazyredraw = false
+vim.opt.updatetime = 300
+
 --for sessions restoring (plugin)
 vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
 
