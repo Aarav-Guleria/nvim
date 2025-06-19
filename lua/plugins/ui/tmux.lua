@@ -20,6 +20,7 @@ return {
         -- Default config, customize as needed
         copy_sync = {
           enable = true,
+        navigation = { enable = true, cycle_navigation = true },
         },
       })
     end,

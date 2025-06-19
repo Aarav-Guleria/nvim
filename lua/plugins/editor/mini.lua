@@ -28,7 +28,7 @@ return {
 
     --Core Editing Enhancements
     --require("mini.ai").setup() if conflicting with treesitter textobjects
-    require("mini.comment").setup()
+    --require("mini.comment").setup() --using comment.nvim
     require("mini.diff").setup()
     require("mini.operators").setup()
     require("mini.splitjoin").setup()
@@ -61,7 +61,7 @@ return {
       open = { enable = false },
       close = { enable = false },
       resize = { enable = false },
-      cursor = { enable = false },
+      cursor = { enable = true },
       scroll = { enable = false },
       windows = {
         exclude = {

@@ -2,15 +2,10 @@ return {
   {
     "mfussenegger/nvim-dap",
     dependencies = {
-      --UI enhancements
       "rcarriga/nvim-dap-ui",
       "theHamsta/nvim-dap-virtual-text",
       "nvim-neotest/nvim-nio",
-
-      --JavaScript/TypeScript debugging
       "mxsdev/nvim-dap-vscode-js",
-
-      --Mason DAP integration
       "jay-babu/mason-nvim-dap.nvim",
     },
     config = function()
@@ -18,33 +13,26 @@ return {
       local dapui = require("dapui")
       local mason_dap = require("mason-nvim-dap")
 
-      -- Setup Mason for automatic installation of debuggers
       mason_dap.setup({
-        ensure_installed = { "js-debug-adapter" },
+        ensure_installed = {
+          "js-debug-adapter",
+        },
         automatic_installation = true,
+        handlers = {},
       })
 
-      --Setup virtual text
       require("nvim-dap-virtual-text").setup({
         enabled = true,
         enabled_commands = true,
         highlight_changed_variables = true,
-        highlight_new_as_changed = false,
         show_stop_reason = true,
-        commented = false,
-        only_first_definition = true,
-        all_references = false,
-        clear_on_continue = false,
+        virt_text_pos = vim.fn.has("nvim-0.10") == 1 and "inline" or "eol",
         display_callback = function(variable, _, _, _, options)
-          if options.virt_text_pos == "inline" then
-            return " = " .. variable.value
-          else
-            return variable.name .. " = " .. variable.value
-          end
+          local value = variable.value:gsub("%s+", " ")
+          return options.virt_text_pos == "inline" and (" = " .. value) or (variable.name .. " = " .. value)
         end,
       })
 
-      --Setup DAP UI
       dapui.setup({
         icons = { expanded = "▾", collapsed = "▸", current_frame = "▸" },
         mappings = {
@@ -55,67 +43,54 @@ return {
           repl = "r",
           toggle = "t",
         },
-        expand_lines = vim.fn.has("nvim-0.7") == 1,
         layouts = {
           {
             elements = {
-              { id = "scopes", size = 0.25 },
-              "breakpoints",
-              "stacks",
-              "watches",
+              { id = "scopes", size = 0.3 },
+              { id = "breakpoints", size = 0.2 },
+              { id = "stacks", size = 0.25 },
+              { id = "watches", size = 0.25 },
             },
             size = 40,
             position = "left",
           },
           {
             elements = {
-              "repl",
-              "console",
+              { id = "repl", size = 0.6 },
+              { id = "console", size = 0.4 },
             },
             size = 0.25,
             position = "bottom",
           },
         },
-        controls = {
-          enabled = true,
-          element = "repl",
-          icons = {
-            pause = "",
-            play = "",
-            step_into = "",
-            step_over = "",
-            step_out = "",
-            step_back = "",
-            run_last = "↻",
-            terminate = "□",
-          },
-        },
         floating = {
-          max_height = nil,
-          max_width = nil,
           border = "single",
-          mappings = {
-            close = { "q", "<Esc>" },
-          },
+          mappings = { close = { "q", "<Esc>" } },
         },
-        windows = { indent = 1 },
         render = {
-          max_type_length = nil,
           max_value_lines = 100,
         },
       })
 
-      --Setup vscode-js-debug adapter
       require("dap-vscode-js").setup({
+        node_path = "node",
         debugger_path = vim.fn.stdpath("data") .. "/mason/packages/js-debug-adapter",
         debugger_cmd = { "js-debug-adapter" },
-        adapters = { "pwa-node", "pwa-chrome", "pwa-msedge", "node-terminal", "pwa-extensionHost" },
+        adapters = {
+          "chrome",
+          "pwa-chrome",
+          "pwa-msedge",
+          "node-terminal",
+          "pwa-extensionHost",
+          "pwa-node",
+        },
       })
 
-      --JavaScript/TypeScript configurations
-      for _, language in ipairs({ "typescript", "javascript", "typescriptreact", "javascriptreact" }) do
+      -- Optimized webdev-focused configurations
+      local js_languages = { "typescript", "javascript", "typescriptreact", "javascriptreact" }
+      for _, language in ipairs(js_languages) do
         dap.configurations[language] = {
-          --Debug Node.js applications
+          -- Node.js debugging
           {
             type = "pwa-node",
             request = "launch",
@@ -124,71 +99,54 @@ return {
             cwd = "${workspaceFolder}",
             sourceMaps = true,
             skipFiles = { "<node_internals>/**" },
-            protocol = "inspector",
             console = "integratedTerminal",
             internalConsoleOptions = "neverOpen",
           },
-
-          --Debug Node.js with TypeScript (ts-node)
+          -- TypeScript with ts-node
           {
             type = "pwa-node",
             request = "launch",
             name = "Launch TypeScript (ts-node)",
             program = "${file}",
             cwd = "${workspaceFolder}",
-            runtimeExecutable = "ts-node",
-            runtimeArgs = { "--transpile-only" },
+            runtimeExecutable = "npx",
+            runtimeArgs = { "ts-node", "--transpile-only" },
             sourceMaps = true,
-            skipFiles = { "<node_internals>/**" },
             console = "integratedTerminal",
             internalConsoleOptions = "neverOpen",
           },
-
-          --Debug Express server
+          -- Next.js debugging
           {
             type = "pwa-node",
             request = "launch",
-            name = "Launch Express Server",
-            program = "${workspaceFolder}/server/index.js", -- Adjust path as needed
-            cwd = "${workspaceFolder}",
-            env = {
-              NODE_ENV = "development",
-            },
-            sourceMaps = true,
-            skipFiles = { "<node_internals>/**" },
-            console = "integratedTerminal",
-            internalConsoleOptions = "neverOpen",
-          },
-
-          --Debug Next.js application
-          {
-            type = "pwa-node",
-            request = "launch",
-            name = "Launch Next.js",
+            name = "Launch Next.js Dev",
             program = "${workspaceFolder}/node_modules/.bin/next",
             args = { "dev" },
             cwd = "${workspaceFolder}",
-            env = {
-              NODE_OPTIONS = "--inspect=9230",
-            },
+            env = { NODE_OPTIONS = "--inspect" },
             sourceMaps = true,
-            skipFiles = { "<node_internals>/**" },
             console = "integratedTerminal",
             internalConsoleOptions = "neverOpen",
           },
-
-          --Debug React app (Create React App)
+          -- Vite debugging
+          {
+            type = "pwa-chrome",
+            request = "launch",
+            name = "Launch Vite Dev Server",
+            url = "http://localhost:5173",
+            webRoot = "${workspaceFolder}/src",
+            userDataDir = "${workspaceFolder}/.vscode/chrome-debug-profile",
+          },
+          -- React debugging
           {
             type = "pwa-chrome",
             request = "launch",
             name = "Launch React App (Chrome)",
             url = "http://localhost:3000",
             webRoot = "${workspaceFolder}/src",
-            sourceMaps = true,
             userDataDir = "${workspaceFolder}/.vscode/chrome-debug-profile",
           },
-
-          --Attach to running Node.js process
+          -- Attach to running Node.js process
           {
             type = "pwa-node",
             request = "attach",
@@ -198,70 +156,52 @@ return {
             sourceMaps = true,
             skipFiles = { "<node_internals>/**" },
           },
-
-          --Debug Jest tests
+          -- Biome-friendly test debugging (using native test runners)
           {
             type = "pwa-node",
             request = "launch",
             name = "Debug Jest Tests",
             runtimeExecutable = "npm",
             runtimeArgs = { "run", "test", "--", "--runInBand" },
-            rootPath = "${workspaceFolder}",
             cwd = "${workspaceFolder}",
+            sourceMaps = true,
             console = "integratedTerminal",
             internalConsoleOptions = "neverOpen",
-            sourceMaps = true,
-            skipFiles = { "<node_internals>/**" },
           },
-
-          --Debug current Jest test file
+          -- Vitest debugging (modern alternative to Jest)
           {
             type = "pwa-node",
             request = "launch",
-            name = "Debug Current Test File",
-            program = "${workspaceFolder}/node_modules/.bin/jest",
-            args = { "${file}", "--runInBand" },
+            name = "Debug Vitest Tests",
+            runtimeExecutable = "npx",
+            runtimeArgs = { "vitest", "run", "${file}" },
             cwd = "${workspaceFolder}",
+            sourceMaps = true,
             console = "integratedTerminal",
             internalConsoleOptions = "neverOpen",
-            sourceMaps = true,
-            skipFiles = { "<node_internals>/**" },
           },
         }
       end
 
-      --MongoDB debugging
-      dap.configurations.javascript = vim.list_extend(dap.configurations.javascript or {}, {
-        {
-          type = "pwa-node",
-          request = "launch",
-          name = "Debug MongoDB Script",
-          program = "${file}",
-          cwd = "${workspaceFolder}",
-          env = {
-            MONGODB_URI = "mongodb://localhost:27017/your-database", -- Adjust as needed
-          },
-          sourceMaps = true,
-          skipFiles = { "<node_internals>/**" },
-          console = "integratedTerminal",
-          internalConsoleOptions = "neverOpen",
-        },
-      })
+      -- Event listeners
+      dap.listeners.before.attach.dapui_config = dapui.open
+      dap.listeners.before.launch.dapui_config = dapui.open
+      dap.listeners.before.event_terminated.dapui_config = dapui.close
+      dap.listeners.before.event_exited.dapui_config = dapui.close
 
-      --Auto-open/close DAP UI
-      dap.listeners.after.event_initialized["dapui_config"] = dapui.open
-      dap.listeners.before.event_terminated["dapui_config"] = dapui.close
-      dap.listeners.before.event_exited["dapui_config"] = dapui.close
-
-      vim.fn.sign_define("DapBreakpoint", { text = "🛑", texthl = "DiagnosticError" })
-      vim.fn.sign_define("DapBreakpointCondition", { text = "🔶", texthl = "DiagnosticWarn" })
-      vim.fn.sign_define("DapLogPoint", { text = "📝", texthl = "DiagnosticInfo" })
+      -- Modern sign definitions
+      vim.fn.sign_define(
+        "DapBreakpoint",
+        { text = "🛑", texthl = "DiagnosticError", linehl = "DapBreakpointLine", numhl = "DapBreakpointNumber" }
+      )
       vim.fn.sign_define("DapStopped", { text = "👉", texthl = "DiagnosticHint" })
+      vim.fn.sign_define("DapLogPoint", { text = "📝", texthl = "DiagnosticInfo" })
+      vim.fn.sign_define("DapBreakpointCondition", { text = "🔶", texthl = "DiagnosticWarn" })
       vim.fn.sign_define("DapBreakpointRejected", { text = "❌", texthl = "DiagnosticError" })
     end,
 
     keys = {
-      --Function key mappings (more traditional debugging)
+      -- Function keys for common debugging actions
       {
         "<F5>",
         function()
@@ -291,16 +231,16 @@ return {
         desc = "Step Out",
       },
 
-      --Leader key mappings
+      -- Breakpoint management
       {
-        "<leader>b",
+        "<leader>db",
         function()
           require("dap").toggle_breakpoint()
         end,
         desc = "Toggle Breakpoint",
       },
       {
-        "<leader>B",
+        "<leader>dB",
         function()
           require("dap").set_breakpoint(vim.fn.input("Breakpoint condition: "))
         end,
@@ -313,29 +253,8 @@ return {
         end,
         desc = "Log Point",
       },
-      {
-        "<leader>dr",
-        function()
-          require("dap").repl.open()
-        end,
-        desc = "Open REPL",
-      },
-      {
-        "<leader>dl",
-        function()
-          require("dap").run_last()
-        end,
-        desc = "Run Last",
-      },
-      {
-        "<leader>do",
-        function()
-          require("dap").terminate()
-        end,
-        desc = "Terminate",
-      },
 
-      --Extended mappings
+      -- Session control
       {
         "<leader>dc",
         function()
@@ -351,19 +270,21 @@ return {
         desc = "Run to Cursor",
       },
       {
-        "<leader>dd",
+        "<leader>dt",
         function()
-          require("dap").disconnect()
+          require("dap").terminate()
         end,
-        desc = "Disconnect",
+        desc = "Terminate",
       },
       {
-        "<leader>dg",
+        "<leader>dl",
         function()
-          require("dap").session()
+          require("dap").run_last()
         end,
-        desc = "Get Session",
+        desc = "Run Last",
       },
+
+      -- Stepping
       {
         "<leader>di",
         function()
@@ -372,34 +293,34 @@ return {
         desc = "Step Into",
       },
       {
-        "<leader>dp",
+        "<leader>do",
         function()
-          require("dap").pause()
+          require("dap").step_over()
         end,
-        desc = "Pause",
+        desc = "Step Over",
       },
       {
-        "<leader>ds",
+        "<leader>dO",
         function()
-          require("dap").session()
+          require("dap").step_out()
         end,
-        desc = "Session",
-      },
-      {
-        "<leader>dt",
-        function()
-          require("dap").terminate()
-        end,
-        desc = "Terminate",
+        desc = "Step Out",
       },
 
-      -- DAP UI
+      -- UI toggles
       {
         "<leader>dw",
         function()
           require("dapui").toggle()
         end,
         desc = "Toggle DAP UI",
+      },
+      {
+        "<leader>dr",
+        function()
+          require("dap").repl.toggle()
+        end,
+        desc = "Toggle REPL",
       },
       {
         "<leader>de",
@@ -410,27 +331,21 @@ return {
         mode = { "n", "v" },
       },
 
-      --Additional mappings
+      -- Advanced features
       {
-        "<leader>dL",
+        "<leader>dh",
         function()
-          require("dap").list_breakpoints()
+          require("dap.ui.widgets").hover()
         end,
-        desc = "List Breakpoints",
+        desc = "Hover Variables",
       },
       {
-        "<leader>dk",
+        "<leader>dS",
         function()
-          require("dap").up()
+          local widgets = require("dap.ui.widgets")
+          widgets.centered_float(widgets.scopes)
         end,
-        desc = "Up",
-      },
-      {
-        "<leader>dj",
-        function()
-          require("dap").down()
-        end,
-        desc = "Down",
+        desc = "Scopes",
       },
     },
   },

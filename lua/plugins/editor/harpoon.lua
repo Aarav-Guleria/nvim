@@ -29,7 +29,7 @@ return {
     end, opts)
 
     -- Telescope integration
-    --require("telescope").load_extension("harpoon")
-    --map("n", "<leader>ht", ":Telescope harpoon marks<CR>", { desc = "Harpoon Telescope" })
+    require("telescope").load_extension("harpoon")
+    --map("n", "<leader>ht", ":Telescope harpoon marks<CR>", { desc = "Harpoon Telescope" }) added in telescope
   end,
 }

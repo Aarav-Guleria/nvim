@@ -16,12 +16,13 @@ return {
       label = {
         rainbow = {
           enabled = true,
+          highlight = { backdrop = true },
         },
       },
     },
     keys = {
       {
-        "s",
+        "f",
         mode = { "n", "x", "o" },
         function()
           require("flash").jump()
@@ -29,7 +30,7 @@ return {
         desc = "Flash Jump",
       },
       {
-        "S",
+        "F",
         mode = { "n", "x", "o" },
         function()
           require("flash").treesitter()
@@ -37,7 +38,7 @@ return {
         desc = "Flash Treesitter",
       },
       {
-        "<leader>fr",
+        "<leader>r",
         mode = "o",
         function()
           require("flash").remote()
@@ -45,12 +46,20 @@ return {
         desc = "Remote Flash",
       },
       {
-        "r",
+        "R",
         mode = { "o", "x" },
         function()
           require("flash").treesitter_search()
         end,
         desc = "Flash Treesitter Search",
+      },
+      {
+        "z",
+        mode = { "n", "x", "o" },
+        function()
+          require("flash").jump({ mode = "char" })
+        end,
+        desc = "Flash f/F/t/T replacement",
       },
     },
   },

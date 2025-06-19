@@ -1,4 +1,5 @@
 vim.g.skip_ts_context_commentstring_module = true
+
 return {
   {
     "nvim-treesitter/nvim-treesitter",
@@ -7,31 +8,29 @@ return {
     dependencies = {
       "nvim-treesitter/nvim-treesitter-textobjects",
       "JoosepAlviste/nvim-ts-context-commentstring",
-      "nvim-treesitter/playground",
+      -- "nvim-treesitter/playground",:InspectTree instead
       "HiPhish/rainbow-delimiters.nvim",
     },
     config = function()
-      local languages = {
-        "lua",
-        "vim",
-        "vimdoc",
-        "bash",
-        "html",
-        "css",
-        "javascript",
-        "typescript",
-        "tsx",
-        "json",
-        "http",
-      }
       require("nvim-treesitter.configs").setup({
-        ensure_installed = languages,
+        ensure_installed = {
+          "lua",
+          "vim",
+          "vimdoc",
+          "bash",
+          "html",
+          "css",
+          "javascript",
+          "typescript",
+          "tsx",
+          "json",
+          "http",
+          "markdown",
+          "yaml",
+        },
         auto_install = true,
         highlight = { enable = true },
-        indent = {
-          enable = true,
-          disable = { "lua" },
-        },
+        indent = { enable = true, disable = { "lua" } },
         incremental_selection = {
           enable = true,
           keymaps = {
@@ -79,30 +78,27 @@ return {
             },
           },
         },
-        matchup = {
-          enable = true, -- only if plugin is installed
-        },
-        rainbow_delimiters = {
-          enable = true,
-        },
+        rainbow_delimiters = { enable = true },
+        context_commentstring = { enable = true, enable_autocmd = false },
       })
-      -- Safe folds setup for ufo.nvim
+
+      -- Fold settings
       vim.opt.foldenable = true
       vim.opt.foldlevel = 99
       vim.opt.foldlevelstart = 99
       vim.opt.foldnestmax = 3
       vim.opt.foldcolumn = "0"
-      --vim.opt.foldmethod = "manual"
-      --vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+
+      --Add a keymap for InspectTree (replacement for playground)
+      vim.keymap.set("n", "<leader>ui", "<cmd>InspectTree<cr>", { desc = "Inspect treesitter tree" })
     end,
   },
+
   {
     "JoosepAlviste/nvim-ts-context-commentstring",
     lazy = true,
     config = function()
-      require("ts_context_commentstring").setup({
-        enable_autocmd = false, -- hooks handle it
-      })
+      require("ts_context_commentstring").setup({ enable_autocmd = false })
     end,
   },
 }

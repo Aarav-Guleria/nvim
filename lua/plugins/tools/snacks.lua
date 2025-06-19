@@ -12,17 +12,46 @@ return {
           },
         },
       },
-      input = { enabled = true },
-      quickfile = { enabled = true, exclude = { "latex" } },
-      picker = {
-        enabled = false,
-        matchers = { frecency = true, cwd_bonus = false },
-        formatters = {
-          file = { filename_first = false, filename_only = false, icon_width = 2 },
-        },
-        layout = { preset = "telescope", cycle = false },
+      input = { enabled = false }, --conflict with dressing.nvim
+      quickfile = {
+        enabled = true,
+        exclude = { "latex" },
       },
-      notifier = { enabled = false },
+      picker = {
+        enabled = true,
+        matchers = {
+          frecency = true,
+          cwd_bonus = false,
+        },
+        formatters = {
+          file = {
+            filename_first = true,
+            filename_only = false,
+            icon_width = 2,
+          },
+        },
+        layout = {
+          preset = "telescope", --Use telescope layout style
+          cycle = false,
+        },
+      },
+      notifier = {
+        enabled = true,
+        timeout = 3000,
+        width = { min = 40, max = 0.4 },
+        height = { min = 1, max = 0.6 },
+        margin = { top = 0, right = 1, bottom = 0 },
+        padding = true,
+        sort = { "level", "added" },
+        level = vim.log.levels.TRACE,
+        icons = {
+          error = " ",
+          warn = " ",
+          info = " ",
+          debug = " ",
+          trace = " ",
+        },
+      },
     },
     config = function(_, opts)
       local ok, snacks = pcall(require, "snacks")
@@ -38,7 +67,7 @@ return {
     end,
   },
 
-  -- Todo comments integration with Snacks pickers
+  -- 📝 Optional Todo picker using snacks
   {
     "folke/todo-comments.nvim",
     event = { "BufReadPre", "BufNewFile" },
@@ -54,7 +83,9 @@ return {
       {
         "<leader>pT",
         function()
-          require("snacks").picker.todo_comments({ keywords = { "TODO", "FIX", "FIXME" } })
+          require("snacks").picker.todo_comments({
+            keywords = { "TODO", "FIX", "FIXME" },
+          })
         end,
         desc = "Todos: TODO/FIX/FIXME",
       },

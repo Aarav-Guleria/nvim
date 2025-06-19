@@ -1,6 +1,6 @@
 return {
   "rcarriga/nvim-notify",
-  enable = false,
+  enable = true,
   lazy = false,
   config = function()
     local notify = require("notify")
@@ -11,7 +11,7 @@ return {
       render = "compact",
       timeout = 2500,
       background_colour = "#1e1e2e",
-      fps = 60,
+      fps = 90,
       top_down = false,
       max_width = 60,
       minimum_width = 30,

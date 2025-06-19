@@ -26,7 +26,8 @@ return {
     { "<leader>fs", "<cmd>Telescope session-lens search_session<cr>", desc = "Find Sessions" },
 
     -- Git
-    { "<leader>gc", "<cmd>Telescope git_commits<cr>", desc = "Git Commits" },
+    { "<leader>fcc", "<cmd>Telescope git_commits<cr>", desc = "Git Commits" },
+
     { "<leader>gS", "<cmd>Telescope git_status<cr>", desc = "Git Status" },
 
     -- LSP
@@ -35,6 +36,7 @@ return {
     { "gi", "<cmd>Telescope lsp_implementations<cr>", desc = "LSP Implementations" },
     { "<leader>dG", "<cmd>Telescope lsp_document_symbols<cr>", desc = "Document Symbols" },
     { "<leader>ws", "<cmd>Telescope lsp_workspace_symbols<cr>", desc = "Workspace Symbols" },
+    { "<leader>ht", "<cmd>Telescope harpoon marks<cr>", desc = "Harpoon Marks" },
   },
 
   opts = {}, -- This allows Lazy or other plugins to merge options without warning
@@ -54,7 +56,7 @@ return {
             ["<C-j>"] = actions.move_selection_next,
             ["<C-k>"] = actions.move_selection_previous,
             ["<C-q>"] = actions.send_to_qflist + actions.open_qflist,
-            ["<C-u>"] = false,
+            ["<C-x>"] = actions.close, -- Changed from <C-u>
           },
           n = {
             ["q"] = actions.close,
@@ -90,5 +92,6 @@ return {
     telescope.load_extension("project")
     telescope.load_extension("session-lens")
     telescope.load_extension("ui-select")
+    telescope.load_extension("harpoon")
   end,
 }

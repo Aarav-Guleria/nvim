@@ -2,7 +2,7 @@ local keymap = vim.keymap.set
 local opts = { noremap = true, silent = true }
 
 vim.g.mapleader = " "
-vim.g.maplocalleader = " "
+vim.g.maplocalleader = ","
 
 -- File Explorer
 keymap("n", "<leader>e", ":Neotree toggle<CR>", { desc = "Toggle File Explorer" })
@@ -26,11 +26,11 @@ keymap("n", "<C-Right>", ":vertical resize +2<CR>", { desc = "Resize bigger" })
 -- keymap("v", "J", ":m '>+1<CR>gv=gv", { desc = "Move selected lines down" })
 -- keymap("v", "K", ":m '<-2<CR>gv=gv", { desc = "Move selected lines up" })
 
--- Paste over selection without yanking
+-- -- Paste over selection without yanking
 keymap("x", "<leader>p", [["_dP]], { desc = "Paste over selection" })
 
--- Delete without yanking
-keymap({ "n", "v" }, "<leader>d", [["_d]], { desc = "Delete without yanking" })
+-- -- Delete without yanking
+keymap({ "n", "v" }, "<leader>D", [["_d]], { desc = "Delete without yanking" })
 
 -- Escape and Clear
 keymap("i", "jj", "<ESC>", opts)

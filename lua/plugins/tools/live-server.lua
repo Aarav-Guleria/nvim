@@ -1,5 +1,6 @@
 return {
   "barrett-ruth/live-server.nvim",
+  build = "npm install -g live-server",
   cmd = { "LiveServer" },
   keys = {
     { "<leader>ls", "<cmd>LiveServer<cr>", desc = "Start live server" },

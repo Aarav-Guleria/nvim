@@ -1,20 +1,20 @@
 return {
   "saghen/blink.cmp",
   enabled = true,
-
-  dependencies = "rafamadriz/friendly-snippets", --code snippits
-
+  lazy = false, -- make sure we load this during startup if it is your main completion plugin
   -- use a release tag to download pre-built binaries
   version = "v0.*",
-  -- OR build from source, requires nightly
-  -- build = 'cargo build --release',
+  -- OR build from source, requires nightly: build = 'cargo build --release',
+  dependencies = {
+    "rafamadriz/friendly-snippets",
+    -- add this if you use luasnip
+    "L3MON4D3/LuaSnip",
+  },
 
   opts = {
     -- 'default' for mappings similar to built-in completion
     -- 'super-tab' for mappings similar to vscode (tab to accept, arrow keys to navigate)
     -- 'enter' for mappings similar to 'super-tab' but with 'enter' to accept
-    -- see the "default configuration" section below for full documentation on how to define
-    -- your own keymap.
     keymap = { preset = "default" },
 
     appearance = {
@@ -33,17 +33,19 @@ return {
     completion = {
       accept = {
         -- experimental auto-brackets support
-        auto_brackets = { --in mini
-          enabled = false,
+        auto_brackets = {
+          enabled = false, -- disabled since using nvim-ts-autotag
         },
       },
-      menu = {
 
+      menu = {
         auto_show = true,
         draw = {
+          treesitter = { "lsp" }, -- Enable treesitter highlighting for LSP items
           columns = {
             { "kind_icon" },
             { "label", "label_description", gap = 1 },
+            { "kind" },
             { "source_name" },
           },
           components = {
@@ -54,36 +56,43 @@ return {
                   Text = "󰉿",
                   Method = "󰆧",
                   Function = "󰊕",
-                  Constructor = "",
+                  Constructor = "",
                   Field = "󰜢",
                   Variable = "󰀫",
                   Class = "󰠱",
-                  Interface = "",
-                  Module = "",
+                  Interface = "",
+                  Module = "",
                   Property = "󰜢",
                   Unit = "󰑭",
                   Value = "󰎠",
-                  Enum = "",
+                  Enum = "",
                   Keyword = "󰌋",
-                  Snippet = "",
+                  Snippet = "",
                   Color = "󰏘",
                   File = "󰈙",
                   Reference = "󰈇",
                   Folder = "󰉋",
-                  EnumMember = "",
+                  EnumMember = "",
                   Constant = "󰏿",
-                  Struct = "",
-                  Event = "",
+                  Struct = "",
+                  Event = "",
                   Operator = "󰆕",
                   TypeParameter = "󰊄",
                 }
-
                 return (kind_icons[ctx.kind] or ctx.kind) .. " "
               end,
               highlight = "BlinkCmpKind",
             },
-            source_name = {
+            kind = {
+              ellipsis = false,
               width = { fill = true },
+              text = function(ctx)
+                return ctx.kind
+              end,
+              highlight = "BlinkCmpKind",
+            },
+            source_name = {
+              width = { max = 30 },
               text = function(ctx)
                 local source_names = {
                   lsp = "[LSP]",
@@ -98,6 +107,7 @@ return {
           },
         },
       },
+
       documentation = {
         auto_show = true,
         auto_show_delay_ms = 200,
@@ -105,44 +115,37 @@ return {
         window = {
           border = "rounded",
           scrollbar = true,
+          direction_priority = {
+            menu_north = { "e", "w", "n", "s" },
+            menu_south = { "e", "w", "s", "n" },
+          },
         },
       },
-      ghost_text = { --using copilot for ghost suggestions
-        enabled = false,
+
+      ghost_text = {
+        enabled = false, -- disabled since using copilot
       },
     },
 
-    --interraction with luasnip
+    -- FIXED: Updated snippets configuration for LuaSnip integration
     snippets = {
-      expand = function(snippet)
-        require("luasnip").lsp_expand(snippet)
-      end,
-      active = function(filter)
-        if filter and filter.direction then
-          return require("luasnip").jumpable(filter.direction)
-        end
-        return require("luasnip").in_snippet()
-      end,
-      jump = function(direction)
-        require("luasnip").jump(direction)
-      end,
+      preset = "luasnip", -- This is the key change - use luasnip preset
     },
 
     sources = {
-      -- default list of enabled providers defined so that you can extend it
-      -- elsewhere in your config, without redefining it, via `opts_extend`
+      -- FIXED: Updated source configuration - use 'snippets' instead of 'luasnip'
       default = { "lsp", "path", "snippets", "buffer" },
-      -- optionally disable cmdline completions
-      -- cmdline = {},
+      -- per-filetype override example
+      -- lua = { "lsp", "snippets", "buffer" },
 
-      -- adding any nvim-cmp sources here will enable them
-      -- with blink.cmp (assuming the dependencies are installed)
       providers = {
         lsp = {
           name = "LSP",
           module = "blink.cmp.sources.lsp",
           enabled = true,
-          score_offset = 90, -- the higher the number, the higher the priority
+          score_offset = 90,
+          -- LSP provider options (no show_signature option available)
+          opts = {},
         },
         path = {
           name = "Path",
@@ -157,18 +160,7 @@ return {
             show_hidden_files_by_default = false,
           },
         },
-        snippets = {
-          name = "Snippets",
-          module = "blink.cmp.sources.snippets",
-          score_offset = 85,
-          opts = {
-            friendly_snippets = true,
-            search_paths = { vim.fn.stdpath("config") .. "/snippets" },
-            global_snippets = { "all" },
-            extended_filetypes = {},
-            ignored_filetypes = {},
-          },
-        },
+        -- REMOVED: luasnip provider (now handled by snippets preset)
         buffer = {
           name = "Buffer",
           module = "blink.cmp.sources.buffer",
@@ -192,6 +184,7 @@ return {
       },
     },
   },
-  -- allows extending the providers array elsewhere in config without having to redefine it
+
+  -- allows extending the providers array elsewhere in config
   opts_extend = { "sources.default" },
 }
